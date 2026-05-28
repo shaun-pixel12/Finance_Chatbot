@@ -1,0 +1,29 @@
+# ==============================================
+# requirements.txt
+# 이 파일은 프로젝트에 필요한 Python 패키지 목록입니다.
+# 설치 명령어: pip install -r requirements.txt
+# ==============================================
+
+# AI 에이전트 프레임워크
+langchain
+langchain-openai
+langchain-community
+
+# 주가 데이터 수집
+yfinance
+
+# 웹 화면 (UI)
+streamlit
+
+# 차트 그리기
+plotly
+
+# .env 파일에서 설정 읽기
+python-dotenv
+
+# 네이버 금융 크롤링용
+beautifulsoup4
+requests
+
+# 데이터 처리
+pandas

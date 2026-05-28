@@ -1,0 +1,19 @@
+# 환경 변수 (API 키가 들어있으므로 절대 GitHub에 올리지 않음)
+.env
+
+# Python 캐시 파일
+__pycache__/
+*.py[cod]
+*.pyo
+
+# 가상환경
+venv/
+.conda/
+
+# IDE 설정
+.vscode/
+.idea/
+
+# OS 파일
+Thumbs.db
+.DS_Store
