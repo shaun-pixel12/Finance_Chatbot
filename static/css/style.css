@@ -1,0 +1,870 @@
+/* ==========================================================================
+   style.css - 금융 AI 어시스턴트 디자인 시스템 (Glassmorphism & Dark Mode)
+   ========================================================================== */
+
+/* ── 1. 디자인 변수 설정 (CSS Variables) ────────────────────────────────── */
+:root {
+    /* 색상 가이드 */
+    --bg-gradient-start: #080b11;
+    --bg-gradient-end: #121824;
+    --sidebar-bg: #0c101a;
+    
+    --card-bg: rgba(255, 255, 255, 0.04);
+    --card-border: rgba(255, 255, 255, 0.06);
+    --card-hover-border: rgba(255, 255, 255, 0.15);
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    --accent-blue: #00e5ff;
+    --accent-blue-hover: #00b4cc;
+    --accent-blue-glow: rgba(0, 229, 255, 0.2);
+    
+    --accent-green: #00e676;
+    --accent-green-bg: rgba(0, 230, 118, 0.1);
+    
+    --accent-red: #ff1744;
+    --accent-red-bg: rgba(255, 23, 68, 0.1);
+    
+    --user-msg-bg: rgba(0, 229, 255, 0.1);
+    --user-msg-border: rgba(0, 229, 255, 0.2);
+    --ai-msg-bg: rgba(255, 255, 255, 0.05);
+    --ai-msg-border: rgba(255, 255, 255, 0.08);
+    
+    /* 폰트 */
+    --font-primary: 'Inter', -apple-system, sans-serif;
+    --font-heading: 'Outfit', sans-serif;
+    
+    /* 레이아웃 */
+    --sidebar-width: 280px;
+    --border-radius-sm: 8px;
+    --border-radius-md: 14px;
+    --border-radius-lg: 20px;
+}
+
+/* ── 2. 기본 초기화 및 구조 ────────────────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* ── 3. 사이드바 영역 스타일링 ─────────────────────────────────────────── */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    margin-bottom: 24px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5));
+}
+
+.logo h1 {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #fff 0%, var(--accent-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sidebar-desc {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 30px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.sidebar-desc strong {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.menu-item {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    padding: 14px 18px;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 15px;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
+}
+
+.menu-item i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.menu-item:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.menu-item.active {
+    color: var(--accent-blue);
+    background: rgba(0, 229, 255, 0.06);
+    border-color: rgba(0, 229, 255, 0.2);
+    font-weight: 600;
+    box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.05);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.disclaimer {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    background: rgba(255, 23, 68, 0.03);
+    border: 1px solid rgba(255, 23, 68, 0.1);
+    padding: 8px 10px;
+    border-radius: var(--border-radius-sm);
+}
+
+.credits {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+/* ── 4. 메인 영역 공통 스타일링 ────────────────────────────────────────── */
+.main-content {
+    flex-grow: 1;
+    height: 100vh;
+    padding: 30px;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* 탭 전환 제어 */
+.tab-panel {
+    display: none;
+    height: 100%;
+    flex-direction: column;
+    animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+.tab-panel.active {
+    display: flex;
+}
+
+.panel-header {
+    margin-bottom: 24px;
+}
+
+.panel-header h2 {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.panel-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* 유리 질감 카드 디자인 */
+.glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: var(--border-radius-lg);
+    padding: 24px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: border-color 0.3s;
+}
+
+.glass-card:hover {
+    border-color: var(--card-hover-border);
+}
+
+
+/* ── 5. [탭 1: AI 챗봇] 스타일링 ────────────────────────────────────────── */
+.chat-layout {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: calc(100vh - 160px);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    position: relative;
+}
+
+/* 대화 리스트 */
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    scroll-behavior: smooth;
+}
+
+/* 개별 메시지 벌룬 */
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.message.user {
+    align-self: flex-end;
+}
+
+.message.assistant {
+    align-self: flex-start;
+}
+
+.msg-header {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.message.user .msg-header {
+    color: var(--accent-blue);
+    justify-content: flex-end;
+}
+
+.message.assistant .msg-header {
+    color: var(--text-secondary);
+}
+
+.msg-bubble {
+    padding: 14px 18px;
+    border-radius: var(--border-radius-md);
+    font-size: 14.5px;
+    line-height: 1.6;
+    word-break: break-all;
+    border: 1px solid;
+}
+
+.message.user .msg-bubble {
+    background: var(--user-msg-bg);
+    border-color: var(--user-msg-border);
+    color: var(--text-primary);
+    border-top-right-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 229, 255, 0.08);
+}
+
+.message.assistant .msg-bubble {
+    background: var(--ai-msg-bg);
+    border-color: var(--ai-msg-border);
+    color: var(--text-primary);
+    border-top-left-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* AI 응답 내 마크다운 렌더링 스타일 */
+.msg-bubble table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13.5px;
+}
+
+.msg-bubble th, .msg-bubble td {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.msg-bubble th {
+    background: rgba(255, 255, 255, 0.08);
+    font-weight: 600;
+}
+
+.msg-bubble tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.msg-bubble p {
+    margin-bottom: 10px;
+}
+
+.msg-bubble p:last-child {
+    margin-bottom: 0;
+}
+
+.msg-bubble ul, .msg-bubble ol {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+/* 추천 질문 버튼 영역 */
+.suggested-questions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.01);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    flex-wrap: wrap;
+}
+
+.suggest-title {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.suggest-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.suggest-btn:hover {
+    background: var(--user-msg-bg);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    transform: translateY(-1px);
+}
+
+/* 하단 입력 영역 */
+.chat-input-area {
+    padding: 18px 24px;
+    background: rgba(12, 16, 26, 0.85);
+    border-top: 1px solid var(--card-border);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-clear {
+    background: rgba(255, 23, 68, 0.08);
+    border: 1px solid rgba(255, 23, 68, 0.15);
+    color: var(--accent-red);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.btn-clear:hover {
+    background: var(--accent-red-bg);
+    transform: scale(1.05);
+}
+
+.input-wrapper {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+}
+
+#chat-input-field {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius-md);
+    color: var(--text-primary);
+    padding: 12px 60px 12px 16px;
+    font-size: 14.5px;
+    outline: none;
+    transition: all 0.3s;
+}
+
+#chat-input-field:focus {
+    border-color: var(--accent-blue);
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+}
+
+.btn-send {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    width: 32px;
+    height: 32px;
+    background: var(--accent-blue);
+    border: none;
+    border-radius: 10px;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-send:hover {
+    background: var(--accent-blue-hover);
+    transform: scale(1.05);
+}
+
+
+/* ── 6. [탭 2: 추천 종목] 스타일링 ──────────────────────────────────────── */
+.recommend-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.filter-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-label {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--card-border);
+}
+
+.radio-label {
+    flex-grow: 1;
+    text-align: center;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-label input {
+    display: none;
+}
+
+.radio-label:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.radio-label.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-action-primary {
+    background: var(--accent-blue);
+    border: none;
+    padding: 16px;
+    border-radius: var(--border-radius-md);
+    color: #000;
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25);
+}
+
+.btn-action-primary:hover {
+    background: var(--accent-blue-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 229, 255, 0.35);
+}
+
+.recommend-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* 결과 출력 영역 */
+.recommend-result-container {
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius-md);
+    padding: 24px;
+    min-height: 250px;
+    line-height: 1.7;
+}
+
+/* 마크다운 요소를 카드형으로 보이기 */
+.recommend-result-container h3 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: var(--accent-blue);
+    border-left: 4px solid var(--accent-blue);
+    padding-left: 12px;
+}
+
+.recommend-result-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.recommend-result-container th, .recommend-result-container td {
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    text-align: left;
+}
+
+.recommend-result-container th {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.recommend-result-container tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.caution-box {
+    background: var(--accent-red-bg);
+    border: 1px solid rgba(255, 23, 68, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: 16px;
+}
+
+.caution-box h4 {
+    color: var(--accent-red);
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.caution-box p {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+}
+
+
+/* ── 7. [탭 3: 시장 현황] 스타일링 ──────────────────────────────────────── */
+.market-period-selector {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+}
+
+.period-title {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.period-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.period-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.period-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.period-btn.active {
+    background: var(--accent-blue);
+    color: #000;
+    font-weight: 600;
+    border-color: var(--accent-blue);
+}
+
+/* 시장 컨테이너 섹션들 */
+.market-sections-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.market-section h3 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 12px;
+}
+
+/* 지표 그리드 (Metrics) */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.metric-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 16px;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.metric-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.metric-value {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.metric-delta {
+    font-size: 12.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.metric-delta.up {
+    color: var(--accent-green);
+}
+
+.metric-delta.down {
+    color: var(--accent-red);
+}
+
+.metric-delta.neutral {
+    color: var(--text-muted);
+}
+
+/* 차트 레이아웃 */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.chart-card {
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius-md);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 280px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chart-title {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.chart-canvas-wrapper {
+    flex-grow: 1;
+    position: relative;
+    height: 200px;
+}
+
+
+/* ── 8. 공통 애니메이션 및 헬퍼 요소들 ────────────────────────────────── */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 40px;
+}
+
+.empty-icon {
+    font-size: 40px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.empty-sub {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* 로딩 스피너 (답변 생성 중 표시) */
+.loading-bubble {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 20px !important;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-secondary);
+    border-radius: 50%;
+    animation: pulse 1.4s infinite ease-in-out both;
+}
+
+.dot:nth-child(1) { animation-delay: -0.32s; }
+.dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes pulse {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 모던 스크롤바 디자인 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}

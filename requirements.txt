@@ -27,3 +27,8 @@ requests
 
 # 데이터 처리
 pandas
+
+# FastAPI 웹 백엔드 서버 구축용
+fastapi
+uvicorn
+

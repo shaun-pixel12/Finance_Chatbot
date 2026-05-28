@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💹 금융 AI 어시스턴트</title>
+    
+    <!-- 구글 폰트 (Outfit, Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 로컬 CSS 스타일시트 -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    <!-- Chart.js (차트 그리기용 라이브러리) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- marked.js (AI가 반환하는 마크다운 문서를 이쁜 HTML로 변환해주는 라이브러리) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- ── 사이드바 영역 ───────────────────────────────────── -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">💹</span>
+                    <h1>금융 AI 챗봇</h1>
+                </div>
+            </div>
+            
+            <p class="sidebar-desc">
+                <strong>Yahoo Finance</strong> 데이터와 <strong>증권사 리포트</strong>를 AI가 실시간으로 분석해드립니다.
+            </p>
+            
+            <!-- 네비게이션 메뉴 (탭 버튼들) -->
+            <nav class="sidebar-menu">
+                <button class="menu-item active" data-tab="tab-chat">
+                    <i class="fa-solid fa-comments"></i>
+                    <span>💬 AI 챗봇</span>
+                </button>
+                <button class="menu-item" data-tab="tab-recommend">
+                    <i class="fa-solid fa-trophy"></i>
+                    <span>🏆 추천 종목</span>
+                </button>
+                <button class="menu-item" data-tab="tab-market">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>📊 시장 현황</span>
+                </button>
+            </nav>
+            
+            <!-- 사이드바 하단 정보 -->
+            <div class="sidebar-footer">
+                <div class="disclaimer">
+                    ⚠️ 투자의 최종 결정과 책임은 투자자 본인에게 있습니다.
+                </div>
+                <div class="credits">
+                    <p>데이터: Yahoo Finance, 네이버 금융</p>
+                    <p>Powered by LangChain + GPT</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ── 메인 콘텐츠 영역 ─────────────────────────────────── -->
+        <main class="main-content">
+            
+            <!-- [탭 1: AI 챗봇] -->
+            <section id="tab-chat" class="tab-panel active">
+                <div class="panel-header">
+                    <h2>💬 AI 금융 어시스턴트</h2>
+                    <p class="panel-desc">주식, 환율, 원자재 등 금융 관련 질문을 자유롭게 해보세요!</p>
+                </div>
+                
+                <div class="chat-layout">
+                    <!-- 대화 메시지가 쌓이는 공간 -->
+                    <div class="chat-messages" id="chat-messages-container">
+                        <!-- 기본 환영 메시지는 JS에서 자동으로 동적 생성됩니다. -->
+                    </div>
+                    
+                    <!-- 추천 질문 버튼 추천 영역 -->
+                    <div class="suggested-questions">
+                        <span class="suggest-title"><i class="fa-solid fa-lightbulb"></i> 추천 질문:</span>
+                        <button class="suggest-btn" data-question="삼성전자 현재 주가 알려줘">삼성전자 주가</button>
+                        <button class="suggest-btn" data-question="오늘 환율 어때?">오늘 환율</button>
+                        <button class="suggest-btn" data-question="최근 증권사 리포트 요약해줘">최신 리포트 요약</button>
+                    </div>
+                    
+                    <!-- 채팅 입력창 영역 -->
+                    <div class="chat-input-area">
+                        <button class="btn-clear" id="btn-clear-chat" title="대화 초기화">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                        <div class="input-wrapper">
+                            <input type="text" id="chat-input-field" placeholder="궁금한 주식이나 금융 정보를 물어보세요..." autocomplete="off">
+                            <button id="btn-send-message" class="btn-send">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- [탭 2: 추천 종목] -->
+            <section id="tab-recommend" class="tab-panel">
+                <div class="panel-header">
+                    <h2>🏆 AI 추천 종목 Top 5</h2>
+                    <p class="panel-desc">Yahoo Finance 데이터 + 증권사 리포트를 종합하여 AI가 실시간으로 분석합니다.</p>
+                </div>
+                
+                <div class="recommend-layout glass-card">
+                    <!-- 필터 폼 -->
+                    <div class="filter-group">
+                        <div class="filter-section">
+                            <label class="filter-label"><i class="fa-regular fa-calendar"></i> 투자 기간</label>
+                            <div class="radio-group" id="recommend-period-group">
+                                <label class="radio-label active">
+                                    <input type="radio" name="recommend-period" value="단기 (1주~1개월)" checked>
+                                    <span>단기 (1주~1개월)</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="recommend-period" value="중기 (1~6개월)">
+                                    <span>중기 (1~6개월)</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="recommend-period" value="장기 (6개월 이상)">
+                                    <span>장기 (6개월 이상)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <label class="filter-label"><i class="fa-solid fa-globe"></i> 대상 시장</label>
+                            <div class="radio-group" id="recommend-market-group">
+                                <label class="radio-label active">
+                                    <input type="radio" name="recommend-market" value="🇰🇷 한국 증시" checked>
+                                    <span>🇰🇷 한국 증시</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="recommend-market" value="🇺🇸 미국 증시">
+                                    <span>🇺🇸 미국 증시</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-action-primary" id="btn-run-recommend">
+                        <i class="fa-solid fa-magnifying-glass"></i> AI 분석 시작
+                    </button>
+                    
+                    <div class="recommend-divider"></div>
+                    
+                    <!-- 추천 보고서 출력 영역 -->
+                    <div class="recommend-result-container" id="recommend-result-box">
+                        <div class="empty-state">
+                            <i class="fa-solid fa-circle-info empty-icon"></i>
+                            <p>위의 <strong>'AI 분석 시작'</strong> 버튼을 눌러주세요.</p>
+                            <p class="empty-sub">AI가 데이터를 종합하여 투자 추천 종목 Top 5 리포트를 생성합니다.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 투자 유의사항 경고 -->
+                    <div class="caution-box">
+                        <h4><i class="fa-solid fa-circle-exclamation"></i> 투자 유의사항</h4>
+                        <p>이 추천은 AI가 공개 데이터를 기반으로 분석한 참고 자료이며, 투자 권유가 아닙니다. 투자의 최종 결정과 책임은 투자자 본인에게 있습니다.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- [탭 3: 시장 현황] -->
+            <section id="tab-market" class="tab-panel">
+                <div class="panel-header">
+                    <h2>📊 실시간 시장 현황</h2>
+                    <p class="panel-desc">데이터 출처: Yahoo Finance (15분 지연)</p>
+                </div>
+                
+                <!-- 기간 선택 버튼들 -->
+                <div class="market-period-selector glass-card">
+                    <span class="period-title"><i class="fa-solid fa-clock"></i> 조회 기간:</span>
+                    <div class="period-buttons" id="market-period-group">
+                        <button class="period-btn" data-period="5d">1주</button>
+                        <button class="period-btn active" data-period="1mo">1개월</button>
+                        <button class="period-btn" data-period="3mo">3개월</button>
+                        <button class="period-btn" data-period="1y">1년</button>
+                    </div>
+                </div>
+                
+                <!-- 지표 컨테이너 -->
+                <div class="market-sections-container">
+                    
+                    <!-- 섹션 1: 증시 지수 -->
+                    <div class="market-section glass-card">
+                        <h3><i class="fa-solid fa-arrow-trend-up"></i> 증시 지수</h3>
+                        <div class="metrics-grid" id="indices-metrics">
+                            <!-- JS에서 동적으로 지표 채움 -->
+                        </div>
+                        <div class="charts-grid" id="indices-charts">
+                            <!-- 차트 캔버스 공간 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 섹션 2: 환율 -->
+                    <div class="market-section glass-card">
+                        <h3><i class="fa-solid fa-money-bill-transfer"></i> 주요 환율</h3>
+                        <div class="metrics-grid" id="exchange-metrics">
+                            <!-- JS에서 동적으로 지표 채움 -->
+                        </div>
+                        <div class="charts-grid" id="exchange-charts">
+                            <!-- 차트 캔버스 공간 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 섹션 3: 원자재 -->
+                    <div class="market-section glass-card">
+                        <h3><i class="fa-solid fa-coins"></i> 원자재 가격</h3>
+                        <div class="metrics-grid" id="commodity-metrics">
+                            <!-- JS에서 동적으로 지표 채움 -->
+                        </div>
+                        <div class="charts-grid" id="commodity-charts">
+                            <!-- 차트 캔버스 공간 -->
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+            
+        </main>
+    </div>
+    
+    <!-- 로컬 JavaScript 앱 로직 -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
